@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:bulbasaureselmejorinicialynolopiensodiscutirconnadie}  # en producción saco a env var
+      expiration-ms: ${JWT_EXPIRATION_MS:3600000}     # 1 hora
+  datasource:
+    url: jdbc:postgresql://localhost:5432/productosdb
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  application:
+    name: gestion-productos
+
+logging:
+  level:
+    org.springframework: INFO
