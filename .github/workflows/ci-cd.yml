@@ -7,7 +7,6 @@ on:
     branches: [ main ]
 
 jobs:
-  # 1) Compilar, testear y empaquetar con Maven
   build:
     runs-on: ubuntu-latest
     steps:
@@ -29,7 +28,6 @@ jobs:
       - name: Compilar y testear
         run: mvn clean verify
 
-  # 2) Construir y pushear la imagen Docker
   docker:
     needs: build
     runs-on: ubuntu-latest
@@ -45,23 +43,13 @@ jobs:
 
       - name: Build y tag de la imagen
         run: |
-          IMAGE=yourdockerhubuser/gestion-productos
+          IMAGE=baravenp/gestion-productos
           TAG=${GITHUB_SHA::8}
           docker build -t $IMAGE:latest -t $IMAGE:$TAG .
 
       - name: Push de la imagen
         run: |
-          IMAGE=yourdockerhubuser/gestion-productos
+          IMAGE=baravenp/gestion-productos
           TAG=${GITHUB_SHA::8}
           docker push $IMAGE:latest
           docker push $IMAGE:$TAG
-
-      # --- Opcional: despliegue automático ---
-      #- name: Desplegar a Kubernetes
-      #  uses: azure/k8s-deploy@v3
-      #  with:
-      #    manifests: |
-      #      k8s/deployment.yaml
-      #      k8s/service.yaml
-      #    images: $IMAGE:$TAG
-
